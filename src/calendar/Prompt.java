@@ -20,15 +20,25 @@ public class Prompt {
 	 * @return 0~6 (0 = Sunday, 6 = Saturday)
 	 */
 	public int parseDay(String week) {
-		if (week.equals("su")) return 0;
-		else if (week.equals("mo")) return 1;
-		else if (week.equals("tu")) return 2;
-		else if (week.equals("we")) return 3;
-		else if (week.equals("th")) return 4;
-		else if (week.equals("fr")) return 5;
-		else if (week.equals("sa")) return 6;
-		else
+		switch (week) {
+		case "su":
 			return 0;
+		case "mo":
+			return 1;
+		case "tu":
+			return 2;
+		case "we":
+			return 3;
+		case "th":
+			return 4;
+		case "fr":
+			return 5;
+		case "sa":
+			return 6;
+		default:
+			return 0;
+		}
+
 	}
 
 	public void runPrompt() throws ParseException {
@@ -36,17 +46,30 @@ public class Prompt {
 		Scanner scanner = new Scanner(System.in);
 		Calendar cal = new Calendar();
 
-		while (true) {
+		boolean isLoop = true;
+		while (isLoop) {
 			System.out.println("명령 (1, 2, 3, h, q)");
 			String cmd = scanner.next();
-			if (cmd.contentEquals("1")) cmdRegister(scanner, cal);
-			else if (cmd.contentEquals("2")) cmdSearch(scanner, cal);
-			else if (cmd.contentEquals("3")) cmdCal(scanner, cal);
-			else if (cmd.contentEquals("h")) printMenu();
-			else if (cmd.contentEquals("q")) break;
+
+			switch (cmd) {
+			case "1":
+				cmdRegister(scanner, cal);
+				break;
+			case "2":
+				cmdSearch(scanner, cal);
+				break;
+			case "3":
+				cmdCal(scanner, cal);
+				break;
+			case "h":
+				printMenu();
+				break;
+			case "q":
+				isLoop = false;
+				break;
+			}
 		}
 		System.out.println("Thank you, Bye~");
-
 		scanner.close();
 	}
 
@@ -74,7 +97,7 @@ public class Prompt {
 		System.out.println("[일정 검색]");
 		System.out.println("날짜를 입력해주세요 (yyyy-MM-dd)");
 		String date = s.next();
-		String plan="";
+		String plan = "";
 		try {
 			plan = c.searchPlan(date);
 		} catch (ParseException e) {
@@ -90,14 +113,14 @@ public class Prompt {
 		String date = s.next();
 		System.out.println("일정을 입력해주세요.(문장의 끝에 ;을 입력해주세요)");
 		String text = "";
-		
-		while(true) {
+
+		while (true) {
 			String word = s.next();
 			text += word + " ";
-			if(word.endsWith(";"))
+			if (word.endsWith(";"))
 				break;
 		}
-		
+
 		c.registerPlan(date, text);
 	}
 
